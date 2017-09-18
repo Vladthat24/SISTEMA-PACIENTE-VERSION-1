@@ -25,7 +25,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import reports.generarReportes;
+import reports.Reporte_Paciente;
 
 public class frmh_paciente extends javax.swing.JInternalFrame {
 
@@ -1000,7 +1000,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtnombreActionPerformed
     private Connection connection = new conexion().conectar();
     private void btnimprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnimprimirActionPerformed
-        generarReportes g = new generarReportes();
+        Reporte_Paciente g = new Reporte_Paciente();
         g.reportePacientes(codigo_paciente_dni);
 
     }//GEN-LAST:event_btnimprimirActionPerformed
@@ -1120,7 +1120,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
             int edad_año = (fhoy_year) - (fnac_year);
 
             lbledad.setText("" + edad_año + "Años - " + edad_meses + " Meses " + edad_dia + " Dias");
-            lblfecha_actual.setText(fhoy_year + " - " + fhoy_mes + " - " + fhoy_dia);
+            lblfecha_actual.setText(fhoy_dia + "/" + fhoy_mes + "/" + fhoy_year);
         } catch (Exception e) {
 
         }

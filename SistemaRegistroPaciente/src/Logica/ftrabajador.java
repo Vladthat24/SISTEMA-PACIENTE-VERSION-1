@@ -29,14 +29,14 @@ public class ftrabajador {
     public DefaultTableModel mostrar(String buscar) {
         DefaultTableModel modelo;
 
-        String[] titulos = {"ID", "Nombre", "Apaterno", "Amaterno", "Direccion", "Doc", "Número Documento", "Celular", "Email", "FechaCreacion"};
+        String[] titulos = {"ID", "Nombre", "Apaterno", "Amaterno", "Direccion","Cargo Intitucion","Modalidad Contrato", "Doc", "Número Documento", "Celular", "Email", "FechaCreacion"};
 
-        String[] registro = new String[10];
+        String[] registro = new String[12];
 
         totalregistros = 0;
         modelo = new DefaultTableModel(null, titulos);
 
-        sSQL = "select p.idptrabajador,p.nombre,p.apaterno,p.amaterno,p.direccion,p.tipo_documento,"
+        sSQL = "select p.idptrabajador,p.nombre,p.apaterno,p.amaterno,p.direccion,p.cargo_institucion,p.modalidad_contrato,p.tipo_documento,"
                 + "t.num_documento,t.celular,t.email,t.fecha_registro from persona_trabajador p inner join trabajador t "
                 + "on p.idptrabajador=t.idptrabajador where num_documento like '%"
                 + buscar + "%' order by idptrabajador desc";
@@ -51,11 +51,13 @@ public class ftrabajador {
                 registro[2] = rs.getString("apaterno");
                 registro[3] = rs.getString("amaterno");
                 registro[4] = rs.getString("direccion");
-                registro[5] = rs.getString("tipo_documento");
-                registro[6] = rs.getString("num_documento");
-                registro[7] = rs.getString("celular");
-                registro[8] = rs.getString("email");
-                registro[9] = rs.getString("fecha_registro");
+                registro[5] = rs.getString("cargo_institucion");
+                registro[6] = rs.getString("modalidad_contrato");
+                registro[7] = rs.getString("tipo_documento");
+                registro[8] = rs.getString("num_documento");
+                registro[9] = rs.getString("celular");
+                registro[10] = rs.getString("email");
+                registro[11] = rs.getString("fecha_registro");
 
                 totalregistros = totalregistros + 1;
                 modelo.addRow(registro);
@@ -71,8 +73,8 @@ public class ftrabajador {
     }
 
     public boolean insertar(vtrabajador dts) {
-        sSQL = "insert into persona_trabajador (nombre,apaterno,amaterno,direccion,tipo_documento)"
-                + "values (?,?,?,?,?)";
+        sSQL = "insert into persona_trabajador (nombre,apaterno,amaterno,direccion,cargo_institucion,modalidad_contrato,tipo_documento)"
+                + "values (?,?,?,?,?,?,?)";
         sSQL2 = "insert into trabajador(idptrabajador,num_documento,celular,email,fecha_registro)"
                 + "values ((select idptrabajador from persona_trabajador order by idptrabajador desc limit 1),?,?,?,?)";
 
@@ -85,7 +87,9 @@ public class ftrabajador {
             pst.setString(2, dts.getApaterno());
             pst.setString(3, dts.getAmaterno());
             pst.setString(4, dts.getDireccion());
-            pst.setString(5, dts.getTipo_documento());
+            pst.setString(5, dts.getCargo_institucion());
+            pst.setString(6, dts.getModalidad_contrato());
+            pst.setString(7, dts.getTipo_documento());
 
             pst2.setString(1, dts.getNum_documento());
             pst2.setString(2, dts.getCelular());
@@ -113,7 +117,7 @@ public class ftrabajador {
     }
 
     public boolean editar(vtrabajador dts) {
-        sSQL = "update persona_trabajador set nombre=?,apaterno=?,amaterno=?,direccion=?,tipo_documento=? where idptrabajador=?";
+        sSQL = "update persona_trabajador set nombre=?,apaterno=?,amaterno=?,direccion=?,cargo_institucion=?,modalidad_contrato=?,tipo_documento=? where idptrabajador=?";
         sSQL2 = "update trabajador set num_documento=?,celular=?,email=?,fecha_registro=? where idptrabajador=?";
 
         try {
@@ -125,8 +129,10 @@ public class ftrabajador {
             pst.setString(2, dts.getApaterno());
             pst.setString(3, dts.getAmaterno());
             pst.setString(4, dts.getDireccion());
-            pst.setString(5, dts.getTipo_documento());
-            pst.setInt(6, dts.getIdptrabajador());
+            pst.setString(5, dts.getCargo_institucion());
+            pst.setString(6, dts.getModalidad_contrato());
+            pst.setString(7, dts.getTipo_documento());
+            pst.setInt(8, dts.getIdptrabajador());
 
             pst2.setString(1, dts.getNum_documento());
             pst2.setString(2, dts.getCelular());
