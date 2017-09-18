@@ -21,7 +21,7 @@ public class prueba {
         System.out.println("Conectado");
         
         
-        generarReportes g=new generarReportes();
+        Reporte_Paciente g=new Reporte_Paciente();
         g.reportePacientes(1);
 
         } catch (Exception e) {

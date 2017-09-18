@@ -6,6 +6,8 @@
 
 package Presentacion;
 
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author CARLOS
@@ -19,7 +21,7 @@ public class frminicio extends javax.swing.JFrame {
         initComponents();
         this.setExtendedState(frminicio.MAXIMIZED_BOTH);
         this.setTitle("Sistema de Registro de Pacientes - DRS SJM - VMT");
-//        frmacceso.txtidacceso.setText("");
+        setIconImage(new ImageIcon(getClass().getResource("../Files/icodeinicio")).getImage());
     }
 
     /**

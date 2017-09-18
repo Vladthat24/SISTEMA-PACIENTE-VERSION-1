@@ -19,9 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class conexion {
     public String db="dbhregistro";
-    public String url="jdbc:mysql://192.168.1.6/" +db;
-    public String user="rpaciente";
-    public String pass="123";
+    public String url="jdbc:mysql://localhost/" +db;
+    public String user="root";
+    public String pass="";
 
     public conexion() {
     }

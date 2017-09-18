@@ -15,17 +15,21 @@ public class vpersona_trabajador {
     private String amaterno;
     private String apaterno;
     private String direccion;
+    private String cargo_institucion;
+    private String modalidad_contrato;
     private String tipo_documento;
 
     public vpersona_trabajador() {
     }
 
-    public vpersona_trabajador(int idptrabajador, String nombre, String amaterno, String apaterno, String direccion, String tipo_documento) {
+    public vpersona_trabajador(int idptrabajador, String nombre, String amaterno, String apaterno, String direccion, String cargo_institucion, String modalidad_contrato, String tipo_documento) {
         this.idptrabajador = idptrabajador;
         this.nombre = nombre;
         this.amaterno = amaterno;
         this.apaterno = apaterno;
         this.direccion = direccion;
+        this.cargo_institucion = cargo_institucion;
+        this.modalidad_contrato = modalidad_contrato;
         this.tipo_documento = tipo_documento;
     }
 
@@ -69,6 +73,22 @@ public class vpersona_trabajador {
         this.direccion = direccion;
     }
 
+    public String getCargo_institucion() {
+        return cargo_institucion;
+    }
+
+    public void setCargo_institucion(String cargo_institucion) {
+        this.cargo_institucion = cargo_institucion;
+    }
+
+    public String getModalidad_contrato() {
+        return modalidad_contrato;
+    }
+
+    public void setModalidad_contrato(String modalidad_contrato) {
+        this.modalidad_contrato = modalidad_contrato;
+    }
+
     public String getTipo_documento() {
         return tipo_documento;
     }
@@ -77,6 +97,7 @@ public class vpersona_trabajador {
         this.tipo_documento = tipo_documento;
     }
 
+ 
     
     
 }

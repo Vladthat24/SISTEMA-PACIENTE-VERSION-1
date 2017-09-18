@@ -8,6 +8,7 @@ package Presentacion;
 import Datos.vacceso;
 import Logica.facceso;
 import Logica.ftrabajador;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,6 +25,7 @@ public class frmlogin extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT");
         this.setLocationRelativeTo(null);
+        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
     }
 
     /**
