@@ -25,7 +25,7 @@ public class frmlogin extends javax.swing.JFrame {
         initComponents();
         this.setTitle("Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT");
         this.setLocationRelativeTo(null);
-        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
+//        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
     }
 
     /**
@@ -240,7 +240,7 @@ public class frmlogin extends javax.swing.JFrame {
            }
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e + "error login");
+            JOptionPane.showMessageDialog(rootPane, e + " Error FrmLogin");
         }
     }//GEN-LAST:event_btningresarActionPerformed
 

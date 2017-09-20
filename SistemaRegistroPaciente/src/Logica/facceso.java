@@ -185,7 +185,7 @@ public class facceso {
           }
           return modelo;
       } catch (Exception e) {
-          JOptionPane.showConfirmDialog(null, e +"error login");
+          JOptionPane.showConfirmDialog(null, e +"error login facceso");
           return null;
       }
   }
