@@ -9,6 +9,7 @@ import Datos.vh_paciente;
 import Logica.conexion;
 import Logica.fh_paciente;
 import com.toedter.calendar.JDateChooser;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.Date;
@@ -37,6 +38,94 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         inhabilitar();
     }
     private String accion = "guardar";
+
+    void guardar() {
+        if (txtnombre.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un Nombre para el paciente");
+            txtnombre.requestFocus();
+            return;
+        }
+        if (txtapaterno.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un apellido para el paciente");
+            txtapaterno.requestFocus();
+            return;
+        }
+
+        if (txtamaterno.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un apellido para el paciente");
+            txtamaterno.requestFocus();
+            return;
+        }
+
+        if (txtcodigo_paciente_dni.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un Número de Doc para el paciente");
+            txtcodigo_paciente_dni.requestFocus();
+            return;
+        }
+
+        if (txtdireccion.getText().length() == 0) {
+            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar la direccion del paciente");
+            txtdireccion.requestFocus();
+            return;
+        }
+
+        vh_paciente dts = new vh_paciente();
+        fh_paciente func = new fh_paciente();
+
+        dts.setHistoria_clinica(txthistoria_clinica.getText());
+        dts.setNombre(txtnombre.getText());
+        dts.setApaterno(txtapaterno.getText());
+        dts.setAmaterno(txtamaterno.getText());
+        int selecc = cbotipo_seguro.getSelectedIndex();
+        dts.setTipo_seguro((String) cbotipo_seguro.getItemAt(selecc));
+        dts.setDireccion(txtdireccion.getText());
+        dts.setCelular(txtcelular.getText());
+        dts.setEmail(txtemail.getText());
+        Calendar cal;
+        int d, m, a;
+        cal = dcfecha_nacimiento.getCalendar();
+        d = cal.get(Calendar.DAY_OF_MONTH);
+        m = cal.get(Calendar.MONTH);
+        a = cal.get(Calendar.YEAR) - 1900;
+
+        dts.setFecha_nacimiento(new Date(a, m, d));
+        selecc = cbosexo.getSelectedIndex();
+        dts.setSexo((String) cbosexo.getItemAt(selecc));
+        dts.setEdad(lbledad.getText());
+        dts.setFa_nombres(txtfa_nombres.getText());
+        dts.setFa_apellidos(txtfa_apellidos.getText());
+        dts.setFa_edad(txtfa_edad.getText());
+        dts.setFa_direccion(txtfa_direccion.getText());
+
+        dts.setFecha_actual(lblfecha_actual.getText());
+        selecc = cboestado_civil.getSelectedIndex();
+        dts.setEstado_civil((String) cboestado_civil.getItemAt(selecc));
+        selecc = cbotipo_documento.getSelectedIndex();
+        dts.setTipo_documento((String) cbotipo_documento.getItemAt(selecc));
+        dts.setCodigo_paciente_dni(txtcodigo_paciente_dni.getText());
+
+        if (accion.equals("guardar")) {
+            if (func.insertar(dts)) {
+                JOptionPane.showMessageDialog(rootPane, "el paciente fue registrado satisfactoriamente");
+                mostrar("");
+                inhabilitar();
+                dcfecha_nacimiento.setDate(null);
+                checkselecction.setSelected(false);
+
+            }
+
+        } else if (accion.equals("editar")) {
+            dts.setIdpersona(Integer.parseInt(txtidpersona.getText()));
+
+            if (func.editar(dts)) {
+                JOptionPane.showMessageDialog(rootPane, "El paciente fue Editado satisfactoriamente");
+                mostrar("");
+                inhabilitar();
+                dcfecha_nacimiento.setDate(null);
+                checkselecction.setSelected(false);
+            }
+        }
+    }
 
     void ocultar_columnas() {
         tablalistado.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -102,6 +191,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         cboestado_civil.setEnabled(false);
         cbotipo_documento.setEnabled(false);
         txtcodigo_paciente_dni.setEnabled(false);
+        checkselecction.setEnabled(false);
 
         btnimprimir.setEnabled(false);
         btnguardar.setEnabled(false);
@@ -145,6 +235,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         cboestado_civil.setEnabled(true);
         cbotipo_documento.setEnabled(true);
         txtcodigo_paciente_dni.setEnabled(true);
+        checkselecction.setEnabled(true);
 
         btnimprimir.setEnabled(true);
         btnguardar.setEnabled(true);
@@ -232,16 +323,16 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
         lbledad = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        cbotipo_seguro = new javax.swing.JComboBox<>();
+        cbotipo_seguro = new javax.swing.JComboBox<String>();
         jLabel12 = new javax.swing.JLabel();
         txtdireccion = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        cbosexo = new javax.swing.JComboBox<>();
+        cbosexo = new javax.swing.JComboBox<String>();
         jLabel13 = new javax.swing.JLabel();
         checkselecction = new javax.swing.JCheckBox();
         lblfecha_actual = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        cboestado_civil = new javax.swing.JComboBox<>();
+        cboestado_civil = new javax.swing.JComboBox<String>();
         jLabel20 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -262,10 +353,19 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         btnguardar.setBackground(new java.awt.Color(51, 51, 51));
         btnguardar.setForeground(new java.awt.Color(255, 255, 255));
         btnguardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/diskette.png"))); // NOI18N
+        btnguardar.setMnemonic('G');
         btnguardar.setText("Guardar");
         btnguardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnguardarActionPerformed(evt);
+            }
+        });
+        btnguardar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnguardarKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnguardarKeyTyped(evt);
             }
         });
 
@@ -301,7 +401,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(8, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txthistoria_clinica, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -311,10 +411,16 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         btnnuevo.setBackground(new java.awt.Color(51, 51, 51));
         btnnuevo.setForeground(new java.awt.Color(255, 255, 255));
         btnnuevo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/document_add.png"))); // NOI18N
+        btnnuevo.setMnemonic('N');
         btnnuevo.setText("Nuevo");
         btnnuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnnuevoActionPerformed(evt);
+            }
+        });
+        btnnuevo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnnuevoKeyPressed(evt);
             }
         });
 
@@ -504,7 +610,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Edad:");
 
-        cbotipo_seguro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Sis", "Essalud", "Otro", "S/N" }));
+        cbotipo_seguro.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Sis", "Essalud", "Otro", "S/N" }));
 
         jLabel12.setText("Tipo de Seguro:");
 
@@ -521,7 +627,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Dirección:");
 
-        cbosexo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Masculino", "Femenino" }));
+        cbosexo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Masculino", "Femenino" }));
 
         jLabel13.setText("Sexo:");
 
@@ -536,7 +642,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
 
         jLabel19.setText("Fecha Actual:");
 
-        cboestado_civil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Soltero", "Casado", "Viudo" }));
+        cboestado_civil.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Soltero", "Casado", "Viudo" }));
 
         jLabel20.setText("Estado Civil:");
 
@@ -676,7 +782,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         );
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel1.setText("Paciente");
+        jLabel1.setText(".:Paciente:.");
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 153));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Listado de Pacientes"));
@@ -702,7 +808,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         btnbuscar.setBackground(new java.awt.Color(51, 51, 51));
         btnbuscar.setForeground(new java.awt.Color(255, 255, 255));
         btnbuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/search.png"))); // NOI18N
-        btnbuscar.setText("Buscar");
+        btnbuscar.setMnemonic('B');
         btnbuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnbuscarActionPerformed(evt);
@@ -712,7 +818,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         btneliminar.setBackground(new java.awt.Color(51, 51, 51));
         btneliminar.setForeground(new java.awt.Color(255, 255, 255));
         btneliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/file_delete.png"))); // NOI18N
-        btneliminar.setText("Eliminar");
+        btneliminar.setMnemonic('E');
         btneliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btneliminarActionPerformed(evt);
@@ -724,7 +830,8 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         btnimprimir.setBackground(new java.awt.Color(51, 51, 51));
         btnimprimir.setForeground(new java.awt.Color(255, 255, 255));
         btnimprimir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/printer.png"))); // NOI18N
-        btnimprimir.setText("Imprimir");
+        btnimprimir.setMnemonic('I');
+        btnimprimir.setToolTipText("");
         btnimprimir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnimprimirActionPerformed(evt);
@@ -735,35 +842,35 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 743, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lbltotalregistros, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnimprimir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnbuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(4, 4, 4)
-                        .addComponent(lbltotalregistros, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                    .addComponent(btneliminar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnbuscar, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnimprimir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(123, 123, 123)
-                .addComponent(btnbuscar)
-                .addGap(18, 18, 18)
-                .addComponent(btneliminar)
-                .addGap(18, 18, 18)
-                .addComponent(btnimprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68)
-                .addComponent(lbltotalregistros)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(btnbuscar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btneliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnimprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbltotalregistros, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -771,27 +878,24 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 1327, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -820,91 +924,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
         // TODO add your handling code here:
-        if (txtnombre.getText().length() == 0) {
-            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un Nombre para el paciente");
-            txtnombre.requestFocus();
-            return;
-        }
-        if (txtapaterno.getText().length() == 0) {
-            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un apellido para el paciente");
-            txtapaterno.requestFocus();
-            return;
-        }
-
-        if (txtamaterno.getText().length() == 0) {
-            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un apellido para el paciente");
-            txtamaterno.requestFocus();
-            return;
-        }
-
-        if (txtcodigo_paciente_dni.getText().length() == 0) {
-            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar un Número de Doc para el paciente");
-            txtcodigo_paciente_dni.requestFocus();
-            return;
-        }
-
-        if (txtdireccion.getText().length() == 0) {
-            JOptionPane.showConfirmDialog(rootPane, "Debes ingresar la direccion del paciente");
-            txtdireccion.requestFocus();
-            return;
-        }
-
-        vh_paciente dts = new vh_paciente();
-        fh_paciente func = new fh_paciente();
-
-        dts.setHistoria_clinica(txthistoria_clinica.getText());
-        dts.setNombre(txtnombre.getText());
-        dts.setApaterno(txtapaterno.getText());
-        dts.setAmaterno(txtamaterno.getText());
-        int selecc = cbotipo_seguro.getSelectedIndex();
-        dts.setTipo_seguro((String) cbotipo_seguro.getItemAt(selecc));
-        dts.setDireccion(txtdireccion.getText());
-        dts.setCelular(txtcelular.getText());
-        dts.setEmail(txtemail.getText());
-        Calendar cal;
-        int d, m, a;
-        cal = dcfecha_nacimiento.getCalendar();
-        d = cal.get(Calendar.DAY_OF_MONTH);
-        m = cal.get(Calendar.MONTH);
-        a = cal.get(Calendar.YEAR) - 1900;
-
-        dts.setFecha_nacimiento(new Date(a, m, d));
-        selecc = cbosexo.getSelectedIndex();
-        dts.setSexo((String) cbosexo.getItemAt(selecc));
-        dts.setEdad(lbledad.getText());
-        dts.setFa_nombres(txtfa_nombres.getText());
-        dts.setFa_apellidos(txtfa_apellidos.getText());
-        dts.setFa_edad(txtfa_edad.getText());
-        dts.setFa_direccion(txtfa_direccion.getText());
-
-        dts.setFecha_actual(lblfecha_actual.getText());
-        selecc = cboestado_civil.getSelectedIndex();
-        dts.setEstado_civil((String) cboestado_civil.getItemAt(selecc));
-        selecc = cbotipo_documento.getSelectedIndex();
-        dts.setTipo_documento((String) cbotipo_documento.getItemAt(selecc));
-        dts.setCodigo_paciente_dni(txtcodigo_paciente_dni.getText());
-
-        if (accion.equals("guardar")) {
-            if (func.insertar(dts)) {
-                JOptionPane.showMessageDialog(rootPane, "el paciente fue registrado satisfactoriamente");
-                mostrar("");
-                inhabilitar();
-                dcfecha_nacimiento.setDate(null);
-                checkselecction.setSelected(false);
-
-            }
-
-        } else if (accion.equals("editar")) {
-            dts.setIdpersona(Integer.parseInt(txtidpersona.getText()));
-
-            if (func.editar(dts)) {
-                JOptionPane.showMessageDialog(rootPane, "El paciente fue Editado satisfactoriamente");
-                mostrar("");
-                inhabilitar();
-                dcfecha_nacimiento.setDate(null);
-                checkselecction.setSelected(false);
-            }
-        }
+        guardar();
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void tablalistadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablalistadoMouseClicked
@@ -937,7 +957,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         cboestado_civil.setSelectedItem(tablalistado.getValueAt(fila, 17));
         cbotipo_documento.setSelectedItem(tablalistado.getValueAt(fila, 18));
         txtcodigo_paciente_dni.setText(tablalistado.getValueAt(fila, 19).toString());
-        codigo_paciente_dni=Integer.parseInt(txtidpersona.getText());
+        codigo_paciente_dni = Integer.parseInt(txtidpersona.getText());
 
     }//GEN-LAST:event_tablalistadoMouseClicked
 
@@ -945,7 +965,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
 //        JOptionPane.showInputDialog(Integer.parseInt(mostrar(txtbuscar.getText())));
         String dni;
-        dni = JOptionPane.showInputDialog("Ingrese el DNI o Nombre");
+        dni = JOptionPane.showInputDialog("Ingrese N° Historia, Nombre, Apellido o DNI");
         mostrar(dni);
 
 
@@ -1108,12 +1128,10 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
             int fhoy_dia = today.get(Calendar.DAY_OF_MONTH);
             int fhoy_mes = today.get(Calendar.MONTH) + 1;
             int fhoy_year = today.get(Calendar.YEAR);
-            
 
             int fnac_dia = dcfecha_nacimiento.getCalendar().get(Calendar.DAY_OF_MONTH);
             int fnac_mes = dcfecha_nacimiento.getCalendar().get(Calendar.MONTH) + 1;
             int fnac_year = dcfecha_nacimiento.getCalendar().get(Calendar.YEAR);
-          
 
             int edad_dia = (fhoy_dia) - (fnac_dia);
             int edad_meses = (fhoy_mes) - (fnac_mes);
@@ -1132,6 +1150,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
 
     private void txthistoria_clinicaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txthistoria_clinicaKeyTyped
         char c = evt.getKeyChar();
+
         int limite = 20;
         if (c < '0' || c > '9') {
             evt.consume();
@@ -1139,6 +1158,7 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
         if (txthistoria_clinica.getText().length() == limite) {
             evt.consume();
         }
+
     }//GEN-LAST:event_txthistoria_clinicaKeyTyped
 
     private void txtfa_nombresKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtfa_nombresKeyTyped
@@ -1185,6 +1205,27 @@ public class frmh_paciente extends javax.swing.JInternalFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtfa_edadKeyTyped
+
+    private void btnguardarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnguardarKeyTyped
+
+    }//GEN-LAST:event_btnguardarKeyTyped
+
+    private void btnguardarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnguardarKeyPressed
+        // TODO add your handling code here:
+ 
+    }//GEN-LAST:event_btnguardarKeyPressed
+
+    private void btnnuevoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnnuevoKeyPressed
+        // TODO add your handling code here:
+        if (evt.getKeyCode() == KeyEvent.VK_N) {
+            habilitar();
+            btnguardar.setText("Guardar");
+            accion = "guardar";
+            checkselecction.setSelected(false);
+            seleccionarFamiliar();
+            dcfecha_nacimiento.setDate(null);
+        }
+    }//GEN-LAST:event_btnnuevoKeyPressed
 
     /**
      * @param args the command line arguments

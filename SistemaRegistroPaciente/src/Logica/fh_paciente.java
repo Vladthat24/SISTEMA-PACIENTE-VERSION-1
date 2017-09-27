@@ -40,8 +40,8 @@ public class fh_paciente {
                 + "p.tipo_seguro,p.direccion,p.celular,p.email,p.fecha_nacimiento,"
                 + "p.sexo,p.edad,p.fa_nombres,p.fa_apellidos,p.fa_edad,p.fa_direccion,"
                 + "p.fecha_actual,p.estado_civil,p.tipo_documento,h.codigo_paciente_dni from persona p inner join h_paciente h "
-                + "on p.idpersona=h.idpersona where codigo_paciente_dni like '%"
-                + buscar + "%' order by idpersona desc";
+                + "on p.idpersona=h.idpersona where nombre like '%"+ buscar + "%' or apaterno like '%"+ buscar+"%' or historia_clinica like '%"
+                + buscar+"%' or codigo_paciente_dni like '%"+ buscar+"%' order by idpersona desc";
 
         try {
             Statement st = cn.createStatement();

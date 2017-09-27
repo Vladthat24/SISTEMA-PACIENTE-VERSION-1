@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Presentacion;
 
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 
 /**
@@ -124,6 +124,11 @@ public class frminicio extends javax.swing.JFrame {
         jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_A, java.awt.event.InputEvent.CTRL_MASK));
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Files/coffee.png"))); // NOI18N
         jMenuItem3.setText("Acerca de...");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         mnuayuda.add(jMenuItem3);
 
         menuBar.add(mnuayuda);
@@ -133,6 +138,11 @@ public class frminicio extends javax.swing.JFrame {
         mnusalir.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 mnusalirMouseClicked(evt);
+            }
+        });
+        mnusalir.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                mnusalirKeyPressed(evt);
             }
         });
         menuBar.add(mnusalir);
@@ -155,7 +165,7 @@ public class frminicio extends javax.swing.JFrame {
 
     private void aboutMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutMenuItemActionPerformed
         // TODO add your handling code here:
-        frmh_paciente form =new frmh_paciente();
+        frmh_paciente form = new frmh_paciente();
         escritorio.add(form);
         form.toFront();
         form.setVisible(true);
@@ -163,7 +173,7 @@ public class frminicio extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
 //         TODO add your handling code here:
-        frmtrabajador form =new frmtrabajador();
+        frmtrabajador form = new frmtrabajador();
         escritorio.add(form);
         form.toFront();
         form.setVisible(true);
@@ -181,6 +191,18 @@ public class frminicio extends javax.swing.JFrame {
         form.toFront();
         form.setVisible(true);
     }//GEN-LAST:event_menuaccesoActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        Acercade form = new Acercade();
+        escritorio.add(form);
+        form.toFront();
+        form.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void mnusalirKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mnusalirKeyPressed
+        
+    }//GEN-LAST:event_mnusalirKeyPressed
 
     /**
      * @param args the command line arguments

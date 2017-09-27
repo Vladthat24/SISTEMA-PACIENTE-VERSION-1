@@ -8,6 +8,7 @@ package Presentacion;
 import Datos.vacceso;
 import Logica.facceso;
 import Logica.ftrabajador;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -23,9 +24,46 @@ public class frmlogin extends javax.swing.JFrame {
      */
     public frmlogin() {
         initComponents();
-        this.setTitle("Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT");
+        this.setTitle(".::Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT::.");
         this.setLocationRelativeTo(null);
 //        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
+    }
+    private void ingresar(){
+               try {
+            
+            DefaultTableModel modelo;
+            facceso func = new facceso();
+            vacceso dts = new vacceso();
+            
+            dts.setLogin(txtusuario.getText());
+            dts.setPassword(txtpassword.getText());
+            
+            modelo= func.login(dts.getLogin(),dts.getPassword());
+            
+           tablalistado.setModel(modelo);
+           
+           if(func.totalregistros > 0) 
+           {
+               
+               this.dispose();
+               frminicio form = new frminicio();
+               form.toFront();
+               form.setVisible(true);
+               
+               frminicio.lblidacceso.setText(tablalistado.getValueAt(0,0).toString());
+               frminicio.lblacceso.setText(tablalistado.getValueAt(0, 1).toString());
+               if(!frminicio.lblacceso.getText().equals("Administrador")){
+                   frminicio.menutrabajador.setEnabled(false);
+               }
+               
+           }
+           else{
+               JOptionPane.showMessageDialog(rootPane,"Acceso Denegado","Acceso al Sistema",JOptionPane.ERROR_MESSAGE);
+           }
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e + " Error FrmLogin");
+        } 
     }
 
     /**
@@ -79,6 +117,11 @@ public class frmlogin extends javax.swing.JFrame {
         btningresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btningresarActionPerformed(evt);
+            }
+        });
+        btningresar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btningresarKeyPressed(evt);
             }
         });
 
@@ -208,40 +251,7 @@ public class frmlogin extends javax.swing.JFrame {
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
-        try {
-            
-            DefaultTableModel modelo;
-            facceso func = new facceso();
-            vacceso dts = new vacceso();
-            
-            dts.setLogin(txtusuario.getText());
-            dts.setPassword(txtpassword.getText());
-            
-            modelo= func.login(dts.getLogin(),dts.getPassword());
-            
-           tablalistado.setModel(modelo);
-           
-           if(func.totalregistros > 0) 
-           {
-               this.dispose();
-               frminicio form = new frminicio();
-               form.toFront();
-               form.setVisible(true);
-               
-               frminicio.lblidacceso.setText(tablalistado.getValueAt(0,0).toString());
-               frminicio.lblacceso.setText(tablalistado.getValueAt(0, 1).toString());
-               if(!frminicio.lblacceso.getText().equals("Administrador")){
-                   frminicio.menutrabajador.setEnabled(false);
-               }
-               
-           }
-           else{
-               JOptionPane.showMessageDialog(rootPane,"Acceso Denegado","Acceso al Sistema",JOptionPane.ERROR_MESSAGE);
-           }
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e + " Error FrmLogin");
-        }
+        ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void txtusuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyTyped
@@ -251,6 +261,14 @@ public class frmlogin extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtusuarioKeyTyped
+
+    private void btningresarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btningresarKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+            ingresar();
+        }
+        
+    }//GEN-LAST:event_btningresarKeyPressed
 
     /**
      * @param args the command line arguments

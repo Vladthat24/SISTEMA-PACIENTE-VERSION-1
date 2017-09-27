@@ -115,7 +115,7 @@ on p.idpersona=h.idpersona where p.idpersona=$P{idpersona}]]>
 				<text><![CDATA[Nombres]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="89" width="131" height="20"/>
+				<reportElement x="24" y="89" width="184" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Arial" size="12" isBold="true" isUnderline="true"/>
 				</textElement>
