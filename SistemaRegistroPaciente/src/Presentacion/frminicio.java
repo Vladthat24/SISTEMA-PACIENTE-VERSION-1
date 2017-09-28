@@ -19,8 +19,9 @@ public class frminicio extends javax.swing.JFrame {
      */
     public frminicio() {
         initComponents();
+        lblidacceso.setVisible(false);
         this.setExtendedState(frminicio.MAXIMIZED_BOTH);
-        this.setTitle("Sistema de Registro de Pacientes - DRS SJM - VMT");
+        this.setTitle(".::SAPT/DRS SJM - VMT::.");
 //        setIconImage(new ImageIcon(getClass().getResource("../Files/icodeinicio")).getImage());
     }
 

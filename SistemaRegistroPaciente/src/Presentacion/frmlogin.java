@@ -6,11 +6,19 @@
 package Presentacion;
 
 import Datos.vacceso;
+import Logica.Progess;
 import Logica.facceso;
 import Logica.ftrabajador;
+import java.awt.Cursor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -22,48 +30,88 @@ public class frmlogin extends javax.swing.JFrame {
     /**
      * Creates new form frmlogin
      */
+    private Timer tiempo;
+    int cont;
+    public final static int TWO_SECOND = 5;
+
     public frmlogin() {
         initComponents();
+        lblprocesar.setVisible(false);
+        
         this.setTitle(".::Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT::.");
         this.setLocationRelativeTo(null);
 //        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
     }
-    private void ingresar(){
-               try {
-            
+
+    class TimerListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            cont++;
+            jbarprocesar.setValue(cont);
+            if (cont == 100) {
+                tiempo.stop();
+                esconder();
+                frminicio form = new frminicio();
+                form.toFront();
+                form.setVisible(true);
+                setVisible(false);
+                frminicio.lblidacceso.setText(tablalistado.getValueAt(0, 0).toString());
+                frminicio.lblacceso.setText(tablalistado.getValueAt(0, 1).toString());
+                if (!frminicio.lblacceso.getText().equals("Administrador")) {
+                    frminicio.menutrabajador.setEnabled(false);
+                }
+
+            }
+        }
+    }
+
+    public void esconder() {
+        this.setVisible(false);
+    }
+
+    public void activar() {
+        tiempo.start();
+    }
+
+    private void ingresar() {
+
+        try {
+
             DefaultTableModel modelo;
             facceso func = new facceso();
             vacceso dts = new vacceso();
-            
+
             dts.setLogin(txtusuario.getText());
             dts.setPassword(txtpassword.getText());
-            
-            modelo= func.login(dts.getLogin(),dts.getPassword());
-            
-           tablalistado.setModel(modelo);
-           
-           if(func.totalregistros > 0) 
-           {
-               
-               this.dispose();
-               frminicio form = new frminicio();
-               form.toFront();
-               form.setVisible(true);
-               
-               frminicio.lblidacceso.setText(tablalistado.getValueAt(0,0).toString());
-               frminicio.lblacceso.setText(tablalistado.getValueAt(0, 1).toString());
-               if(!frminicio.lblacceso.getText().equals("Administrador")){
-                   frminicio.menutrabajador.setEnabled(false);
-               }
-               
-           }
-           else{
-               JOptionPane.showMessageDialog(rootPane,"Acceso Denegado","Acceso al Sistema",JOptionPane.ERROR_MESSAGE);
-           }
-            
+
+            modelo = func.login(dts.getLogin(), dts.getPassword());
+
+            tablalistado.setModel(modelo);
+
+            if (func.totalregistros > 0) {
+                cont=-1;
+                jbarprocesar.setValue(0);
+                jbarprocesar.setStringPainted(true);
+                tiempo= new Timer(TWO_SECOND,new TimerListener());
+                activar();
+//                frminicio form = new frminicio();
+//                this.dispose();
+//                form.toFront();
+//                form.setVisible(true);
+//                frminicio.lblidacceso.setText(tablalistado.getValueAt(0, 0).toString());
+//                frminicio.lblacceso.setText(tablalistado.getValueAt(0, 1).toString());
+//                if (!frminicio.lblacceso.getText().equals("Administrador")) {
+//                    frminicio.menutrabajador.setEnabled(false);
+//                }
+
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Acceso Denegado", "Acceso al Sistema", JOptionPane.ERROR_MESSAGE);
+            }
+
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e + " Error FrmLogin");
-        } 
+        }
     }
 
     /**
@@ -87,6 +135,8 @@ public class frmlogin extends javax.swing.JFrame {
         btningresar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablalistado = new javax.swing.JTable();
+        jbarprocesar = new javax.swing.JProgressBar();
+        lblprocesar = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -104,6 +154,12 @@ public class frmlogin extends javax.swing.JFrame {
         txtusuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtusuarioKeyTyped(evt);
+            }
+        });
+
+        txtpassword.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtpasswordKeyPressed(evt);
             }
         });
 
@@ -138,27 +194,34 @@ public class frmlogin extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablalistado);
 
+        lblprocesar.setText("Procesando................................");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jbarprocesar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(btningresar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
-                .addComponent(jLabel4)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(0, 0, 0)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel3)
+                                    .addComponent(jLabel5)))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addComponent(btningresar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblprocesar))
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(jLabel4)))
                 .addGap(15, 15, 15))
         );
         jPanel3Layout.setVerticalGroup(
@@ -166,7 +229,6 @@ public class frmlogin extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -180,8 +242,12 @@ public class frmlogin extends javax.swing.JFrame {
                                 .addGap(33, 33, 33)
                                 .addComponent(btningresar))
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(71, 71, 71)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(57, 57, 57)
+                        .addComponent(lblprocesar))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbarprocesar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jLabel6.setText("\"Año del Buen Servicio al Ciudadano\"");
@@ -191,15 +257,14 @@ public class frmlogin extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel6)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel1)
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -214,8 +279,9 @@ public class frmlogin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel6)
                         .addGap(18, 18, 18)))
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(20, 20, 20))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -231,8 +297,8 @@ public class frmlogin extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -251,24 +317,34 @@ public class frmlogin extends javax.swing.JFrame {
 
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
+        lblprocesar.setVisible(true);
         ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
     private void txtusuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtusuarioKeyTyped
         // TODO add your handling code here:
-        char c= evt.getKeyChar();
-        if(Character.isDigit(c)){
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c)) {
             evt.consume();
         }
     }//GEN-LAST:event_txtusuarioKeyTyped
 
     private void btningresarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btningresarKeyPressed
         // TODO add your handling code here:
-        if(evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             ingresar();
         }
-        
+
     }//GEN-LAST:event_btningresarKeyPressed
+
+    private void txtpasswordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpasswordKeyPressed
+        // TODO add your handling code here:
+       
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            lblprocesar.setVisible(true);
+            ingresar();
+        }
+    }//GEN-LAST:event_txtpasswordKeyPressed
 
     /**
      * @param args the command line arguments
@@ -316,6 +392,8 @@ public class frmlogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JProgressBar jbarprocesar;
+    private javax.swing.JLabel lblprocesar;
     private javax.swing.JTable tablalistado;
     private javax.swing.JPasswordField txtpassword;
     private javax.swing.JTextField txtusuario;
