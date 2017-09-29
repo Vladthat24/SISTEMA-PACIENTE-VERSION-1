@@ -37,7 +37,7 @@ public class frmlogin extends javax.swing.JFrame {
     public frmlogin() {
         initComponents();
         lblprocesar.setVisible(false);
-        
+        jbarprocesar.setVisible(false);
         this.setTitle(".::Acceso al SAPT - ÁREA DE INFORMÁTICA-DRS SJM-VMT::.");
         this.setLocationRelativeTo(null);
 //        setIconImage(new ImageIcon(getClass().getResource("../Files/icologin.png")).getImage());
@@ -318,6 +318,7 @@ public class frmlogin extends javax.swing.JFrame {
     private void btningresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btningresarActionPerformed
         // TODO add your handling code here:
         lblprocesar.setVisible(true);
+        jbarprocesar.setVisible(true);
         ingresar();
     }//GEN-LAST:event_btningresarActionPerformed
 
@@ -332,6 +333,8 @@ public class frmlogin extends javax.swing.JFrame {
     private void btningresarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btningresarKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            lblprocesar.setVisible(true);
+            jbarprocesar.setVisible(true);
             ingresar();
         }
 
@@ -342,6 +345,7 @@ public class frmlogin extends javax.swing.JFrame {
        
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             lblprocesar.setVisible(true);
+            jbarprocesar.setVisible(true);
             ingresar();
         }
     }//GEN-LAST:event_txtpasswordKeyPressed
