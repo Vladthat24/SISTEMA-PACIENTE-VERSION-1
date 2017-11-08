@@ -52,17 +52,17 @@ public class frminicio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        escritorio.setBackground(new java.awt.Color(102, 255, 255));
+        escritorio.setBackground(new java.awt.Color(167, 186, 186));
 
         lblidacceso.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         lblidacceso.setText("jLabel1");
         escritorio.add(lblidacceso);
-        lblidacceso.setBounds(20, 10, 130, 16);
+        lblidacceso.setBounds(20, 10, 130, 17);
 
         lblacceso.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         lblacceso.setText("jLabel7");
         escritorio.add(lblacceso);
-        lblacceso.setBounds(20, 40, 130, 16);
+        lblacceso.setBounds(20, 40, 130, 17);
 
         menuBar.setBackground(new java.awt.Color(255, 255, 255));
 

@@ -172,7 +172,7 @@
     <Container class="javax.swing.JDesktopPane" name="escritorio">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="ff" green="ff" red="66" type="rgb"/>
+          <Color blue="ba" green="ba" red="a7" type="rgb"/>
         </Property>
       </Properties>
       <AuxValues>
